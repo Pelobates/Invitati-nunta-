@@ -1,7 +1,7 @@
-// 1) După publicarea Apps Script, înlocuiește adresa de mai jos cu URL-ul /exec.
+// URL-ul aplicației Apps Script publicate
 const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwwM7fltVTLvWpeW9uXKeddc7iAnA06oHFtApK12mSh4oZOBfdS3Jb05DKGef3VRdN1Fg/exec";
 
-// 2) Schimbă data nunții aici: an, luna-1, zi, oră.
+// Data nunții
 const WEDDING_DATE = new Date(2026, 9, 24, 15, 0, 0);
 
 const form = document.getElementById("rsvpForm");
@@ -14,28 +14,43 @@ const menu = document.getElementById("meniu");
 const companionName = document.getElementById("insotitor");
 const companionMenu = document.getElementById("meniu_insotitor");
 
-// Permite linkuri personalizate de forma: site.ro/?nume=Ion%20Popescu&id=INV123
+// Linkuri personalizate
 const params = new URLSearchParams(window.location.search);
-if (params.get("nume")) document.getElementById("nume").value = params.get("nume");
-if (params.get("id")) document.getElementById("invitatId").value = params.get("id");
 
+if (params.get("nume"))
+  document.getElementById("nume").value = params.get("nume");
+
+if (params.get("id"))
+  document.getElementById("invitatId").value = params.get("id");
+
+// Participă?
 document.querySelectorAll('input[name="participa"]').forEach((radio) => {
   radio.addEventListener("change", () => {
     const participates = radio.value === "Da" && radio.checked;
+
     attendanceDetails.classList.toggle("hidden", !participates);
+
     menu.required = participates;
-    document.querySelectorAll('input[name="prezenta"]').forEach(r => r.required = participates);
+
+    document
+      .querySelectorAll('input[name="prezenta"]')
+      .forEach((r) => (r.required = participates));
+
     if (!participates) resetCompanion();
   });
 });
 
+// Singur / Însoțit
 document.querySelectorAll('input[name="prezenta"]').forEach((radio) => {
   radio.addEventListener("change", () => {
     const accompanied = radio.value === "Insotit" && radio.checked;
+
     companionNameField.classList.toggle("hidden", !accompanied);
     companionMenuField.classList.toggle("hidden", !accompanied);
+
     companionName.required = accompanied;
     companionMenu.required = accompanied;
+
     if (!accompanied) {
       companionName.value = "";
       companionMenu.value = "";
@@ -44,56 +59,88 @@ document.querySelectorAll('input[name="prezenta"]').forEach((radio) => {
 });
 
 function resetCompanion() {
-  document.querySelectorAll('input[name="prezenta"]').forEach(r => { r.checked = false; r.required = false; });
+  document.querySelectorAll('input[name="prezenta"]').forEach((r) => {
+    r.checked = false;
+    r.required = false;
+  });
+
   menu.required = false;
   menu.value = "";
+
   companionNameField.classList.add("hidden");
   companionMenuField.classList.add("hidden");
+
   companionName.required = false;
   companionMenu.required = false;
+
   companionName.value = "";
   companionMenu.value = "";
 }
 
-form.addEventListener("submit", (event) => {
-  if (GOOGLE_SCRIPT_URL.includes("PASTE_")) {
-    event.preventDefault();
-    statusEl.textContent = "Mai întâi adaugă URL-ul Google Apps Script în script.js.";
-    statusEl.className = "status error";
-    return;
-  }
+// ==========================
+// TRIMITERE RSVP
+// ==========================
+form.addEventListener("submit", async (event) => {
+  event.preventDefault();
 
-  form.action = GOOGLE_SCRIPT_URL;
   submitButton.disabled = true;
   submitButton.textContent = "Se trimite...";
   statusEl.textContent = "";
 
-  // Formularul este trimis într-un iframe ascuns, evitând problemele CORS.
-  setTimeout(() => {
+  const formData = new FormData(form);
+
+  try {
+    await fetch(GOOGLE_SCRIPT_URL, {
+      method: "POST",
+      body: formData,
+      mode: "no-cors"
+    });
+
     statusEl.textContent = "Mulțumim! Răspunsul a fost înregistrat.";
     statusEl.className = "status success";
-    submitButton.disabled = false;
-    submitButton.textContent = "Trimite confirmarea";
+
     form.reset();
     attendanceDetails.classList.add("hidden");
     resetCompanion();
-  }, 1400);
+
+  } catch (error) {
+    console.error(error);
+
+    statusEl.textContent =
+      "A apărut o eroare la trimiterea formularului.";
+
+    statusEl.className = "status error";
+
+  } finally {
+    submitButton.disabled = false;
+    submitButton.textContent = "Trimite confirmarea";
+  }
 });
 
+// Countdown
 function updateCountdown() {
+
   const diff = WEDDING_DATE.getTime() - Date.now();
+
   const root = document.getElementById("countdown");
+
   if (diff <= 0) {
     root.innerHTML = "<p>A sosit ziua cea mare! ♡</p>";
     return;
   }
+
   const days = Math.floor(diff / 86400000);
   const hours = Math.floor((diff / 3600000) % 24);
   const minutes = Math.floor((diff / 60000) % 60);
   const seconds = Math.floor((diff / 1000) % 60);
-  root.innerHTML = [
-    [days, "zile"], [hours, "ore"], [minutes, "minute"], [seconds, "secunde"]
-  ].map(([value, label]) => `<div><strong>${value}</strong><span>${label}</span></div>`).join("");
+
+  root.innerHTML = `
+      <div><strong>${days}</strong><span>zile</span></div>
+      <div><strong>${hours}</strong><span>ore</span></div>
+      <div><strong>${minutes}</strong><span>minute</span></div>
+      <div><strong>${seconds}</strong><span>secunde</span></div>
+  `;
 }
+
 updateCountdown();
 setInterval(updateCountdown, 1000);
