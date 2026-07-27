@@ -1,5 +1,5 @@
 // 1) După publicarea Apps Script, înlocuiește adresa de mai jos cu URL-ul /exec.
-const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwaAI7Ht0EJkRTr6ThtmsAMy47PM-yvLfMutJDTsqf13aiAhXdsBKWtn-DPQYF5xCel/exec";
+const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycby3x-mD9Uww3N9UpTwT_7Hq8y7Q9mKC25sMcxO8gCjEHkfclVqwdhG908Rtxd9dFsa1/exec";
 
 // 2) Schimbă data nunții aici: an, luna-1, zi, oră.
 const WEDDING_DATE = new Date(2026, 9, 24, 15, 0, 0);
