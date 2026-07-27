@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="ro">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="Invitație de nuntă și formular RSVP" />
+  <title>Ana & Mihai — Invitație la nuntă</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Montserrat:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="hero">
+    <div class="hero__overlay"></div>
+    <div class="hero__content">
+      <p class="eyebrow">Ne căsătorim</p>
+      <h1>Ana <span>&</span> Mihai</h1>
+      <p class="date">12 septembrie 2027 · Cluj-Napoca</p>
+      <a class="button button--light" href="#confirmare">Confirmă participarea</a>
+    </div>
+  </header>
+
+  <main>
+    <section class="section intro">
+      <p class="eyebrow">Cu multă bucurie</p>
+      <h2>Vă invităm să ne fiți alături</h2>
+      <p>Începem un nou capitol și ne-ar face mare plăcere să sărbătorim această zi împreună cu voi.</p>
+    </section>
+
+    <section class="section details">
+      <article class="card">
+        <div class="icon">♡</div>
+        <h3>Ceremonia</h3>
+        <p><strong>15:00</strong></p>
+        <p>Biserica Sfântul Mihail<br>Piața Unirii, Cluj-Napoca</p>
+        <a href="https://maps.google.com" target="_blank" rel="noopener">Vezi pe hartă</a>
+      </article>
+      <article class="card">
+        <div class="icon">✦</div>
+        <h3>Petrecerea</h3>
+        <p><strong>18:00</strong></p>
+        <p>Grand Hotel Italia<br>Str. Trifoiului 2, Cluj-Napoca</p>
+        <a href="https://maps.google.com" target="_blank" rel="noopener">Vezi pe hartă</a>
+      </article>
+    </section>
+
+    <section class="section countdown-section">
+      <p class="eyebrow">Până la ziua cea mare</p>
+      <div id="countdown" class="countdown" aria-label="Cronometru până la nuntă"></div>
+    </section>
+
+    <section id="confirmare" class="section rsvp-section">
+      <div class="rsvp-card">
+        <p class="eyebrow">RSVP</p>
+        <h2>Confirmare participare</h2>
+        <p class="rsvp-intro">Vă rugăm să confirmați până la 12 august 2027.</p>
+
+        <form id="rsvpForm" method="POST" target="hidden_iframe">
+          <div class="field full">
+            <label for="nume">Nume și prenume *</label>
+            <input id="nume" name="nume" autocomplete="name" required />
+          </div>
+
+          <fieldset class="full">
+            <legend>Vei participa? *</legend>
+            <div class="choice-row">
+              <label class="choice"><input type="radio" name="participa" value="Da" required /> Da, cu drag</label>
+              <label class="choice"><input type="radio" name="participa" value="Nu" required /> Nu pot participa</label>
+            </div>
+          </fieldset>
+
+          <div id="attendanceDetails" class="conditional full hidden">
+            <fieldset>
+              <legend>Vii singur(ă) sau însoțit(ă)? *</legend>
+              <div class="choice-row">
+                <label class="choice"><input type="radio" name="prezenta" value="Singur" /> Singur(ă)</label>
+                <label class="choice"><input type="radio" name="prezenta" value="Insotit" /> Însoțit(ă)</label>
+              </div>
+            </fieldset>
+
+            <div class="grid-two">
+              <div class="field">
+                <label for="meniu">Meniul tău *</label>
+                <select id="meniu" name="meniu">
+                  <option value="">Alege meniul</option>
+                  <option>Normal</option>
+                  <option>Vegetarian</option>
+                  <option>Vegan</option>
+                  <option>Pește</option>
+                  <option>Copii</option>
+                </select>
+              </div>
+
+              <div id="companionNameField" class="field hidden">
+                <label for="insotitor">Nume însoțitor *</label>
+                <input id="insotitor" name="insotitor" />
+              </div>
+
+              <div id="companionMenuField" class="field hidden">
+                <label for="meniu_insotitor">Meniu însoțitor *</label>
+                <select id="meniu_insotitor" name="meniu_insotitor">
+                  <option value="">Alege meniul</option>
+                  <option>Normal</option>
+                  <option>Vegetarian</option>
+                  <option>Vegan</option>
+                  <option>Pește</option>
+                  <option>Copii</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <div class="field full">
+            <label for="alergii">Alergii sau cerințe alimentare</label>
+            <textarea id="alergii" name="alergii" rows="3" placeholder="Ex.: alergie la nuci, fără gluten"></textarea>
+          </div>
+
+          <div class="field full">
+            <label for="mesaj">Mesaj pentru miri</label>
+            <textarea id="mesaj" name="mesaj" rows="3"></textarea>
+          </div>
+
+          <input type="hidden" id="invitatId" name="invitat_id" />
+          <button id="submitButton" class="button" type="submit">Trimite confirmarea</button>
+          <p id="formStatus" class="status" role="status" aria-live="polite"></p>
+        </form>
+        <iframe name="hidden_iframe" id="hidden_iframe" title="Trimitere formular" class="hidden-iframe"></iframe>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <p>Cu drag, Ana & Mihai</p>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
