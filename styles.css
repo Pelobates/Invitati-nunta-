@@ -12,7 +12,7 @@ body { margin: 0; color: var(--ink); background: var(--cream); font-family: Mont
 h1, h2, h3 { font-family: "Cormorant Garamond", serif; line-height: 1.05; margin-top: 0; }
 h2 { font-size: clamp(2.3rem, 6vw, 4rem); margin-bottom: 1rem; }
 a { color: var(--sage); }
-.hero { min-height: 92vh; position: relative; display: grid; place-items: center; text-align: center; color: white; background: url("https://images.unsplash.com/photo-M9uZafL6fSs") center/cover; }
+.hero { min-height: 92vh; position: relative; display: grid; place-items: center; text-align: center; color: white; background: url("wedding-background.jpg") center/cover; }
 .hero__overlay { position: absolute; inset: 0; background: linear-gradient(rgba(20,25,20,.35), rgba(20,25,20,.55)); }
 .hero__content { position: relative; padding: 2rem; }
 .hero h1 { font-size: clamp(4rem, 14vw, 9rem); margin: .2rem 0; font-weight: 600; }
